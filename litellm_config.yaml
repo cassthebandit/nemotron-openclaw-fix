@@ -1,0 +1,53 @@
+model_list:
+  - model_name: nemotron-local
+    litellm_params:
+      model: openai/nvidia-nemotron-3-super-120b-a12b
+      api_base: http://100.103.228.50:1234/v1
+      api_key: lm-studio
+      drop_params: true
+    model_info:
+      id: nemotron-local
+      mode: chat
+      supports_reasoning: true
+  - model_name: nemotron-openrouter
+    litellm_params:
+      model: openrouter/nvidia/nemotron-3-super-120b-a12b:free
+      api_key: os.environ/OPENROUTER_API_KEY
+      drop_params: true
+    model_info:
+      id: nemotron-openrouter
+      mode: chat
+      supports_reasoning: true
+  - model_name: nemotron-nvidia
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3-super-120b-a12b
+      api_key: os.environ/NVIDIA_API_KEY
+      drop_params: true
+    model_info:
+      id: nemotron-nvidia
+      mode: chat
+      supports_reasoning: true
+  - model_name: nemotron-kilo
+    litellm_params:
+      model: openai/nvidia-nemotron-3-super-120b-a12b
+      api_base: https://api.kilo.ai/v1
+      api_key: os.environ/KILO_API_KEY
+      drop_params: true
+    model_info:
+      id: nemotron-kilo
+      mode: chat
+      supports_reasoning: true
+guardrails:
+  - guardrail_name: "reasoning-fixer"
+    litellm_params:
+      guardrail: reasoning_guardrail.ReasoningGuardrail
+      mode: "post_call"
+      default_on: true
+litellm_settings:
+  drop_params: true
+  num_retries: 2
+  request_timeout: 120
+  success_callback: ["prometheus"]
+  failure_callback: ["prometheus"]
+general_settings:
+  master_key: sk-litellm-nemotron-proxy
